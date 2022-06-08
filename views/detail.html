@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=!, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+        function articleUpdate() {
+            let articleId = $('#articleId').val()
+            let title = $('#title').val()
+            let writer = $('#writer').val()
+            let content = $('#content').val()
+            $.ajax({
+                type: 'PUT',
+                url: '/board/update/'+ articleId,
+                dataType: 'json',
+                data: {'title': title, 'writer': writer, 'content': content},
+                success: function (response) {
+                    alert(response.msg)
+                    window.location.reload()
+                }
+            })
+        }
+
+        function articleDelete() {
+            let articleId = $('#articleId').val()
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/board/delete/'+ articleId,
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    alert(response.msg)
+                    window.location.href = "/board"
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+    <h1>게시글 조회 페이지입니다.</h1>
+    <input type="hidden" name="articleId" id="articleId" value="{{ article.articleId }}">
+    제목: <input type="text" name="title" id="title" value="{{ article.title }}">
+    작성자: <input type="text" name="writer" id="writer" value="{{ article.writer }}">
+    내용: <textarea cols="50" rows="10" name="content" id="content" >{{ article.content }}</textarea>
+
+    <button onclick="articleUpdate()" type="button" >수정하기</button>
+    <button onclick="articleDelete()" type="button" >삭제하기</button>
+    <!-- <a href="/board/update/{{ articles.articleId }}">수정하기</a>
+    <a href="/board/delete/{{ articles.articleId }}">삭제하기</a> -->
+
+
+</body>
+</html>
