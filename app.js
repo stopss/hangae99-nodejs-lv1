@@ -65,11 +65,12 @@ router.get("/board/:articleId", async (req, res) => {
     try {
         const { articleId } = req.params;
         const article = await Article.findById(articleId).exec();
+        const comment = await Comment.find({ articleId }).sort("-createdAt").exec();
 
         if (!article) {
             res.status(404).send({});
         } else {
-            res.send({ article });
+            res.send({ article, comment });
         }
     } catch(error) {
         console.log(error)
